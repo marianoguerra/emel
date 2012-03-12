@@ -11,30 +11,39 @@ get it
 
 ::
 
-        git clone https://github.com/marianoguerra/emel
+    git clone https://github.com/marianoguerra/emel
 
 build it
 --------
 
 ::
 
-        cd emel
-        ./rebar compile
+    cd emel
+    ./rebar compile
 
 test it
 -------
 
 ::
 
-        ./rebar eunit
+    ./rebar eunit
 
 use it
 ------
 
 ::
 
-        TODO
+    1> emel:gen("span[type=\"text\"]#asd.foo.bar.baz").
+    {ok,"<span id=\"asd\" class=\"foo bar baz\" type=\"text\"/>"}
 
+    2> {ok, S} = emel:gen("span[type=\"text\"]#asd.foo.bar.baz").  
+    {ok,"<span id=\"asd\" class=\"foo bar baz\" type=\"text\"/>"}
+
+    3> io:format("~s~n", [S]).
+    <span id="asd" class="foo bar baz" type="text"/>
+    ok
+
+    
 author
 ------
 
