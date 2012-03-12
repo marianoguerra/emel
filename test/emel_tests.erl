@@ -258,6 +258,18 @@ check_gen(Expr, Expected) ->
 gen_simple_tag_test() ->
     check_gen("a", "<a/>").
 
+gen_simple_times_test() ->
+    check_gen("a * 3", "<a/><a/><a/>").
+
+gen_times_test() ->
+    check_gen("#foo + a * 3 + span", "<div id=\"foo\"/><a/><a/><a/><span/>").
+
+gen_times_count_test() ->
+    check_gen("a#foo-$ * 3", "<a id=\"foo-1\"/><a id=\"foo-2\"/><a id=\"foo-3\"/>").
+
+%gen_hardcore_times_count_test() ->
+%    check_gen("#out-$ * 2 > a#foo-$ * 2", "<div id=\"out-1\"><a id=\"foo-1\"/><a id=\"foo-2\"/></div><div id=\"out-2\"><a id=\"foo-1\"/><a id=\"foo-2\"/></div>").
+
 gen_only_id_test() ->
     check_gen("#foo", "<div id=\"foo\"/>").
 
@@ -281,3 +293,12 @@ gen_tag_attrs_id_and_classes_test() ->
 
 gen_sibling_test() ->
     check_gen("a + p + br", "<a/><p/><br/>").
+
+gen_simple_child_test() ->
+    check_gen("p > a", "<p><a/></p>").
+
+gen_child_test() ->
+    check_gen("p > #foo > a", "<p><div id=\"foo\"><a/></div></p>").
+
+gen_child_1_test() ->
+    check_gen("select>option#item-$*3", "<select><option id=\"item-1\"/><option id=\"item-2\"/><option id=\"item-3\"/></select>").
