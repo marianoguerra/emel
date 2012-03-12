@@ -240,3 +240,6 @@ gen_only_attrs_id_and_classes_test() ->
 
 gen_tag_attrs_id_and_classes_test() ->
     check_gen("span[type=\"text\"]#asd.foo.bar.baz", "<span id=\"asd\" class=\"foo bar baz\" type=\"text\"/>").
+
+gen_sibling_test() ->
+    check_gen("a + p + br", "<a/><p/><br/>").
