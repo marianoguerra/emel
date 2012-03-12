@@ -2,3 +2,4 @@ ebin
 .eunit
 emel_lexer.erl
 emel_parser.erl
+erl_crash.dump
