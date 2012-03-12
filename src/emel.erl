@@ -1,6 +1,6 @@
 -module(emel).
 
--export([gen/1]).
+-export([gen/1, shell/0]).
 
 -ifdef(TEST).
 -compile(export_all).
@@ -59,3 +59,19 @@ gen(Expr) ->
     XmlString = lists:flatten(XmlIOList),
 
     {ok, XmlString}.
+
+shell_loop() ->
+    Expression = io:get_line(">>> "),
+    if
+        Expression /= eof ->
+            Expr = string:strip(Expression, right, $\n),
+            io:format("~p~n~n", [get_tree(Expr)]),
+            io:format("~s~n~n", [element(2, gen(Expr))]),
+            shell_loop();
+
+        true ->
+            io:format("bye~n")
+    end.
+
+shell() ->
+    shell_loop().
