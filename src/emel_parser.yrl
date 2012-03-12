@@ -5,7 +5,7 @@ root parents childs siblings node classes node_filter apply_filter apply_filters
 Terminals
 
 identifier string number id cls sibling child parent times openattr closeattr
-equal filter.
+equal filter open close.
 
 Rootsymbol root.
 
@@ -37,6 +37,8 @@ node -> attrs id classes : {node, line('$1'), 'div', [{id, unwrap('$2')}, {class
 node -> identifier attrs id : {node, line('$1'), unwrap('$1'), [{id, unwrap('$3')}], unwrap('$2')}.
 node -> identifier attrs classes : {node, line('$1'), unwrap('$1'), [{class, unwrap('$3')}], unwrap('$2')}.
 node -> identifier attrs id classes : {node, line('$1'), unwrap('$1'), [{id, unwrap('$3')}, {class, unwrap('$4')}], unwrap('$2')}.
+
+node -> open root close : '$2'.
 
 node_filter -> node : '$1'.
 node_filter -> node apply_filters : {filter, line('$1'), '$1', '$2'}.

@@ -12,6 +12,8 @@ Sibling    = \+
 Times      = \*
 OpenAttr   = \[
 CloseAttr  = \]
+Open       = \(
+Close      = \)
 Equal      = =
 Filter     = \|
 Whites     = \s+
@@ -31,6 +33,8 @@ Rules.
 {Times}                  : make_token(times, TokenLine, TokenChars).
 {OpenAttr}               : make_token(openattr, TokenLine, TokenChars).
 {CloseAttr}              : make_token(closeattr, TokenLine, TokenChars).
+{Open}                   : make_token(open, TokenLine, TokenChars).
+{Close}                  : make_token(close, TokenLine, TokenChars).
 {Equal}                  : make_token(equal, TokenLine, TokenChars).
 {Filter}                 : make_token(filter, TokenLine, TokenChars).
 {Whites}                 : skip_token.

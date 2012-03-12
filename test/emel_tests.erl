@@ -168,6 +168,44 @@ parser_child_and_parent_test() ->
             {child, 1, {node, 1, li, [], []},
              {parent, 1, {node, 1, span, [], []}, {node, 1, a, [], []}}}]).
 
+parser_simple_parens_test() ->
+    check_tree("(a)", [[{node, 1, a, [], []}]]).
+
+parser_parens_test() ->
+    check_tree("#page>(#header>ul#nav>li*4>a)+(#page>((h1>span)+p*2))+#footer",
+               [
+                {child, 1,
+                 {node, 1, 'div', [{id, page}], []},
+                 [
+                  {child, 1,
+                   {node, 1, 'div', [{id, header}], []},
+                   {child, 1,
+                    {node, 1, ul, [{id, nav}], []},
+                    {child, 1,
+                     {times, 1, {node, 1, li, [], []}, 4},
+                     {node, 1, a, [], []}
+                    }
+                   }
+                  }
+                 ]
+                },
+
+                [
+                 {child, 1,
+                  {node, 1, 'div', [{id, page}], []},
+                  [
+                   [{child, 1,
+                    {node, 1, h1, [], []},
+                    {node, 1, span, [], []}
+                   }],
+                   {times, 1, {node, 1, p, [], []}, 2}
+                  ]
+                 }
+                ],
+
+                {node, 1, 'div', [{id, footer}], []}
+               ]).
+
 % lexer tests
 
 check_lex(Expr, Expected) ->
