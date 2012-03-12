@@ -1,0 +1,46 @@
+emel - generate HTML with CSS-like selectors
+============================================
+
+emel is an erlang module that allows to generate complex HTML (or XML) using
+a syntax that is similar to CSS selectors.
+
+emel is inspired by zen-coding: https://code.google.com/p/zen-coding/
+
+get it
+------
+
+::
+
+        git clone https://github.com/marianoguerra/emel
+
+build it
+--------
+
+::
+
+        cd emel
+        ./rebar compile
+
+test it
+-------
+
+::
+
+        ./rebar eunit
+
+use it
+------
+
+::
+
+        TODO
+
+author
+------
+
+Mariano Guerra
+
+license
+-------
+
+BSD (+ optional beer to the author)
