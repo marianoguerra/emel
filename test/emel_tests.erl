@@ -211,3 +211,32 @@ lex_tokens_test() ->
     check_single_token("=", equal, '='),
     check_single_token("|", filter, '|').
 
+% gen tests
+
+check_gen(Expr, Expected) ->
+    {ok, Text} = emel:gen(Expr),
+    ?assertEqual(Expected, Text).
+
+gen_simple_tag_test() ->
+    check_gen("a", "<a/>").
+
+gen_only_id_test() ->
+    check_gen("#foo", "<div id=\"foo\"/>").
+
+gen_only_class_test() ->
+    check_gen(".foo", "<div class=\"foo\"/>").
+
+gen_only_classes_test() ->
+    check_gen(".foo.bar.baz", "<div class=\"foo bar baz\"/>").
+
+gen_only_id_and_class_test() ->
+    check_gen("#asd.foo", "<div id=\"asd\" class=\"foo\"/>").
+
+gen_only_id_and_classes_test() ->
+    check_gen("#asd.foo.bar.baz", "<div id=\"asd\" class=\"foo bar baz\"/>").
+
+gen_only_attrs_id_and_classes_test() ->
+    check_gen("[type=\"text\"]#asd.foo.bar.baz", "<div id=\"asd\" class=\"foo bar baz\" type=\"text\"/>").
+
+gen_tag_attrs_id_and_classes_test() ->
+    check_gen("span[type=\"text\"]#asd.foo.bar.baz", "<span id=\"asd\" class=\"foo bar baz\" type=\"text\"/>").
