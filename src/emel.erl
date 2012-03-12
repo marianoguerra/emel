@@ -55,9 +55,7 @@ gen(Expr) ->
     {ok, Tree, _} = get_tree(Expr),
     PTree = process_tree(Tree),
 
-    XmlIOList = xmerl:export_simple(PTree, xmerl_xml),
+    XmlIOList = xmerl:export_simple_content(PTree, xmerl_xml),
     XmlString = lists:flatten(XmlIOList),
-    % TODO: find a way to remove the header in xmerl
-    XmlWithoutHeader = string:substr(XmlString, 22),
 
-    {ok, XmlWithoutHeader}.
+    {ok, XmlString}.
