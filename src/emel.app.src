@@ -1,0 +1,12 @@
+{application, emel,
+ [
+  {description, ""},
+  {vsn, "1"},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib
+                 ]},
+  {mod, { emel_app, []}},
+  {env, []}
+ ]}.
