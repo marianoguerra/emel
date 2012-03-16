@@ -53,3 +53,119 @@ license
 -------
 
 BSD (+ optional beer to the author)
+
+examples
+--------
+
+input::
+
+    p
+
+output::
+
+    <p/>
+
+input::
+
+    p#id
+
+output::
+
+    <p id="id"/>
+
+input::
+
+    p.class
+
+output::
+
+    <p class="class"/>
+
+input::
+
+    p#id.class
+
+output::
+
+    <p id="id" class="class"/>
+
+input::
+
+    p#foo.bar.baz
+
+output::
+
+    <p id="foo" class="bar baz"/>
+
+input::
+
+    p#id-$ * 3
+
+output::
+
+    <p id="id-1"/><p id="id-2"/><p id="id-3"/>
+
+input::
+
+    {hello}
+
+output::
+
+    hello
+
+input::
+
+    p{hello}
+
+output::
+
+    <p>hello</p>
+
+input::
+
+    h1#title.important {hi}
+
+output::
+
+    <h1 id="title" class="important">hi</h1>
+
+input::
+
+    ul > li * 3
+
+output::
+
+    <ul><li/><li/><li/></ul>
+
+input::
+
+    ul.list > li#item-$.list-item * 3
+
+output::
+
+    <ul class="list"><li id="item-1" class="list-item"/><li id="item-2" class="list-item"/><li id="item-3" class="list-item"/></ul>
+
+input::
+
+    .username > (span.first-name{Mariano} + { } + span.last-name{Guerra})
+
+output::
+
+    <div class="username"><span class="first-name">Mariano</span> <span class="last-name">Guerra</span></div>
+
+input::
+
+    p * 3 > a{asd}
+
+output::
+
+    <p><a>asd</a></p><p><a>asd</a></p><p><a>asd</a></p>
+
+input::
+
+    p > ({Click } + a{here} + { to continue})
+
+output::
+
+    <p>Click <a>here</a> to continue</p>
+
