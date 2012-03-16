@@ -43,6 +43,31 @@ use it
     <span id="asd" class="foo bar baz" type="text"/>
     ok
 
+try it interactively
+--------------------
+
+run the following command::
+
+        erl -run emel shell -run init stop -noshell -pa ebin
+
+play with an interactive console::
+
+        emel console Ctrl + d to exit
+
+        >>> p
+        {ok,[{node,1,p,[],[],[]}],[]}
+
+        <p/>
+
+        >>> p{hi}
+        {ok,[{node,1,p,[],[],"hi"}],[]}
+
+        <p>hi</p>
+
+        >>> li*3
+        {ok,[{times,1,{node,1,li,[],[],[]},3}],[]}
+
+        <li/><li/><li/>
     
 author
 ------
