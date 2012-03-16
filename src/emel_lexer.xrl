@@ -3,6 +3,7 @@ Definitions.
 Identifier = [a-zA-Z\$][a-zA-Z0-9\-\$]*
 Number     = [0-9][0-9]*
 String     = "(\\\^.|\\.|[^\"])*"
+Text       = \{(\\.|[^\}])*\}
 
 IdPrefix   = #
 ClsPrefix  = \.
@@ -23,6 +24,7 @@ Rules.
 {Identifier}             : make_token(identifier, TokenLine, TokenChars).
 {String}                 : build_string(string, TokenChars, TokenLine, TokenLen).
 {Number}                 : make_token(number, TokenLine, TokenChars, fun erlang:list_to_integer/1).
+{Text}                    : build_text(text, TokenChars, TokenLine, TokenLen).
 
 {IdPrefix}{Identifier}   : make_token(id, TokenLine, tl(TokenChars)).
 {ClsPrefix}{Identifier}  : make_token(cls, TokenLine, tl(TokenChars)).
@@ -52,6 +54,10 @@ make_token(Name, Line, Chars, Fun) ->
 build_string(Type, Chars, Line, Len) ->
   String = unescape_string(lists:sublist(Chars, 2, Len - 2), Line),
     {token, {Type, Line, String}}.
+
+build_text(Type, Chars, Line, Len) ->
+  Text = lists:sublist(Chars, 2, Len - 2),
+    {token, {Type, Line, Text}}.
 
 unescape_string(String, Line) -> unescape_string(String, Line, []).
 

@@ -53,11 +53,18 @@ process_iattrs([{Name, Val}|T], Count, Accum) ->
 join_attrs(IAttrs, Attrs, Count) ->
     process_iattrs(IAttrs, Count) ++ replace_count_placeholder(Attrs, Count).
 
-process_node({node, _Line, Name, IAttrs, Attrs}, Accum, Count) ->
-    [{Name, join_attrs(IAttrs, Attrs, Count), []}|Accum];
+process_node({text, _Line, Text}, Accum, _Count) ->
+    [Text|Accum];
 
-process_node({child, _Line, {node, _Line1, Name, IAttrs, Attrs}, Child}, Accum, Count) ->
-    [{Name, join_attrs(IAttrs, Attrs, Count), process_tree(Child)}|Accum];
+process_node({node, _Line, Name, IAttrs, Attrs, Text}, Accum, Count) ->
+    Content = if Text == [] -> []; true -> [Text] end,
+
+    [{Name, join_attrs(IAttrs, Attrs, Count), Content}|Accum];
+
+process_node({child, _Line, {node, _Line1, Name, IAttrs, Attrs, Text}, Child}, Accum, Count) ->
+    Content = if Text == [] -> []; true -> [Text] end,
+
+    [{Name, join_attrs(IAttrs, Attrs, Count), process_tree(Child, Content)}|Accum];
 
 process_node({child, _Line, {times, TimesLine, Parent, Times}, Child}, Accum, Count) ->
     process_node({times, TimesLine, {child, TimesLine, Parent, Child}, Times}, Accum, Count);
@@ -76,11 +83,11 @@ process_node({times, _Line, _Node, Times}, Accum, _ParentTimes, Times) ->
 process_node({times=Name, Line, Node, Times}, Accum, ParentTimes, Count) ->
     process_node({Name, Line, Node, Times}, process_node(Node, Accum, Count + 1), ParentTimes, Count + 1).
 
-process_tree(Tree) when is_tuple(Tree) ->
-    process_tree([Tree]);
-
 process_tree(Tree) ->
     process_tree(Tree, []).
+
+process_tree(Tree, Accum) when is_tuple(Tree) ->
+    process_tree([Tree], Accum);
 
 process_tree([], Accum) ->
     lists:reverse(Accum);

@@ -1,11 +1,12 @@
 Nonterminals
 
-root parents childs siblings node classes node_filter apply_filter apply_filters node_times attrs attrvals attrval.
+root parents childs siblings node classes node_filter apply_filter
+apply_filters node_times node_text attrs attrvals attrval.
 
 Terminals
 
 identifier string number id cls sibling child parent times openattr closeattr
-equal filter open close.
+equal filter open close text.
 
 Rootsymbol root.
 
@@ -17,26 +18,30 @@ siblings -> childs sibling siblings : ['$1'|'$3'].
 childs -> parents : '$1'.
 childs -> parents child childs : {child, line('$1'), '$1', '$3'}.
 
-parents -> node_times : '$1'.
-parents -> node_times parent parents: {parent, line('$1'), '$1', '$3'}.
+parents -> node_text : '$1'.
+parents -> node_text parent parents: {parent, line('$1'), '$1', '$3'}.
+
+node_text -> node_times : '$1'.
+node_text -> text : {text, line('$1'), unwrap('$1')}.
+node_text -> node_times text : set_text('$1', unwrap('$2')).
 
 node_times -> node_filter : '$1'.
 node_times -> node_filter times number : {times, line('$1'), '$1', unwrap('$3')}.
 
-node -> identifier : {node, line('$1'), unwrap('$1'), [], []}.
-node -> id : {node, line('$1'), 'div', [{id, unwrap('$1')}], []}.
-node -> classes : {node, line('$1'), 'div', [{class, unwrap('$1')}], []}.
-node -> attrs : {node, line('$1'), 'div', [], unwrap('$1')}.
+node -> identifier : {node, line('$1'), unwrap('$1'), [], [], []}.
+node -> id : {node, line('$1'), 'div', [{id, unwrap('$1')}], [], []}.
+node -> classes : {node, line('$1'), 'div', [{class, unwrap('$1')}], [], []}.
+node -> attrs : {node, line('$1'), 'div', [], unwrap('$1'), []}.
 
-node -> id classes : {node, line('$1'), 'div', [{id, unwrap('$1')}, {class, unwrap('$2')}], []}.
-node -> identifier id : {node, line('$1'), unwrap('$1'), [{id, unwrap('$2')}], []}.
-node -> identifier classes : {node, line('$1'), unwrap('$1'), [{class, unwrap('$2')}], []}.
-node -> identifier id classes : {node, line('$1'), unwrap('$1'), [{id, unwrap('$2')}, {class, unwrap('$3')}], []}.
+node -> id classes : {node, line('$1'), 'div', [{id, unwrap('$1')}, {class, unwrap('$2')}], [], []}.
+node -> identifier id : {node, line('$1'), unwrap('$1'), [{id, unwrap('$2')}], [], []}.
+node -> identifier classes : {node, line('$1'), unwrap('$1'), [{class, unwrap('$2')}], [], []}.
+node -> identifier id classes : {node, line('$1'), unwrap('$1'), [{id, unwrap('$2')}, {class, unwrap('$3')}], [], []}.
 
-node -> attrs id classes : {node, line('$1'), 'div', [{id, unwrap('$2')}, {class, unwrap('$3')}], unwrap('$1')}.
-node -> identifier attrs id : {node, line('$1'), unwrap('$1'), [{id, unwrap('$3')}], unwrap('$2')}.
-node -> identifier attrs classes : {node, line('$1'), unwrap('$1'), [{class, unwrap('$3')}], unwrap('$2')}.
-node -> identifier attrs id classes : {node, line('$1'), unwrap('$1'), [{id, unwrap('$3')}, {class, unwrap('$4')}], unwrap('$2')}.
+node -> attrs id classes : {node, line('$1'), 'div', [{id, unwrap('$2')}, {class, unwrap('$3')}], unwrap('$1'), []}.
+node -> identifier attrs id : {node, line('$1'), unwrap('$1'), [{id, unwrap('$3')}], unwrap('$2'), []}.
+node -> identifier attrs classes : {node, line('$1'), unwrap('$1'), [{class, unwrap('$3')}], unwrap('$2'), []}.
+node -> identifier attrs id classes : {node, line('$1'), unwrap('$1'), [{id, unwrap('$3')}, {class, unwrap('$4')}], unwrap('$2'), []}.
 
 node -> open root close : '$2'.
 
@@ -65,3 +70,9 @@ unwrap({_,_,V}) -> V.
 
 line(T) when is_tuple(T) -> element(2, T);
 line([H|_T]) -> element(2, H).
+
+set_text({node, Line, Tag, Attrs, Classes, []}, Text) ->
+    {node, Line, Tag, Attrs, Classes, Text};
+
+set_text({times, LineTimes, {node, Line, Tag, Attrs, Classes, []}, Count}, Text) ->
+    {times, LineTimes, {node, Line, Tag, Attrs, Classes, Text}, Count}.
