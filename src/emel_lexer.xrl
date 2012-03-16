@@ -24,7 +24,7 @@ Rules.
 {Identifier}             : make_token(identifier, TokenLine, TokenChars).
 {String}                 : build_string(string, TokenChars, TokenLine, TokenLen).
 {Number}                 : make_token(number, TokenLine, TokenChars, fun erlang:list_to_integer/1).
-{Text}                    : build_text(text, TokenChars, TokenLine, TokenLen).
+{Text}                   : build_text(text, TokenChars, TokenLine, TokenLen).
 
 {IdPrefix}{Identifier}   : make_token(id, TokenLine, tl(TokenChars)).
 {ClsPrefix}{Identifier}  : make_token(cls, TokenLine, tl(TokenChars)).

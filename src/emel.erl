@@ -1,6 +1,6 @@
 -module(emel).
 
--export([gen/1, shell/0]).
+-export([gen/1, shell/0, rst/1]).
 
 -ifdef(TEST).
 -compile(export_all).
@@ -108,9 +108,14 @@ shell_loop() ->
     Expression = io:get_line(">>> "),
     if
         Expression /= eof ->
-            Expr = string:strip(Expression, right, $\n),
-            io:format("~p~n~n", [get_tree(Expr)]),
-            io:format("~s~n~n", [element(2, gen(Expr))]),
+            try
+                Expr = string:strip(Expression, right, $\n),
+                io:format("~p~n~n", [get_tree(Expr)]),
+                io:format("~s~n~n", [element(2, gen(Expr))])
+            catch _:Error ->
+                io:format("error: ~p~n", [Error])
+            end,
+
             shell_loop();
 
         true ->
@@ -118,4 +123,10 @@ shell_loop() ->
     end.
 
 shell() ->
+    io:format("emel console Ctrl + d to exit~n~n"),
     shell_loop().
+
+rst([Input]) ->
+    io:format("input::~n~n    ~s~n~n", [Input]),
+    {_, Output} = gen(Input),
+    io:format("output::~n~n    ~s~n~n", [Output]).
