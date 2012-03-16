@@ -302,3 +302,12 @@ gen_child_test() ->
 
 gen_child_1_test() ->
     check_gen("select>option#item-$*3", "<select><option id=\"item-1\"/><option id=\"item-2\"/><option id=\"item-3\"/></select>").
+
+gen_parent_times_test() ->
+    check_gen("p * 3 > a", "<p><a/></p><p><a/></p><p><a/></p>").
+
+gen_parent_times_count_test() ->
+    check_gen("p#id-$ * 3 > a", "<p id=\"id-1\"><a/></p><p id=\"id-2\"><a/></p><p id=\"id-3\"><a/></p>").
+
+gen_parent_times_count_1_test() ->
+    check_gen("ul>li#id-$ * 3 > a", "<ul><li id=\"id-1\"><a/></li><li id=\"id-2\"><a/></li><li id=\"id-3\"><a/></li></ul>").

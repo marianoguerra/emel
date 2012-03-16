@@ -59,6 +59,9 @@ process_node({node, _Line, Name, IAttrs, Attrs}, Accum, Count) ->
 process_node({child, _Line, {node, _Line1, Name, IAttrs, Attrs}, Child}, Accum, Count) ->
     [{Name, join_attrs(IAttrs, Attrs, Count), process_tree(Child)}|Accum];
 
+process_node({child, _Line, {times, TimesLine, Parent, Times}, Child}, Accum, Count) ->
+    process_node({times, TimesLine, {child, TimesLine, Parent, Child}, Times}, Accum, Count);
+
 process_node({times, _Line, _Node, 0}, Accum, _) ->
     Accum;
 
