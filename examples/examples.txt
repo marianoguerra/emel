@@ -1,0 +1,14 @@
+p
+p#id
+p.class
+p#id.class
+p#foo.bar.baz
+p#id-$ * 3
+{hello}
+p{hello}
+h1#title.important {hi}
+ul > li * 3
+ul.list > li#item-$.list-item * 3
+.username > (span.first-name{Mariano} + { } + span.last-name{Guerra})
+p * 3 > a{asd}
+p > ({Click } + a{here} + { to continue})
